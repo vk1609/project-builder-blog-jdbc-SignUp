@@ -37,8 +37,17 @@ public class LoginController extends HttpServlet {
 		String password = request.getParameter("password"); //  get the password value from the jsp/html page
 
 		// Fill your code
+		User user = new User(email, password);
+		UserDAO userdao = new UserDAO();
+		user.setEmail(email);
+		user.setPassword(password);
 		
-		boolean validateUser = userdao.loginUser(user);
+
+		UserDAO userDAO = new UserDAO();
+		try {
+			userDAO.loginUser(user);
+			boolean validateUser = userDAO.loginUser(user);
+			
 		if(validateUser) {
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/blogView.jsp");
 			rd.forward(request, response);
@@ -47,6 +56,11 @@ public class LoginController extends HttpServlet {
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
 			rd.forward(request, response);
 		}	
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
 }
+
+
